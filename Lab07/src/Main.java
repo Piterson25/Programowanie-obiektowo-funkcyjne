@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Program - Kalendarz tygodniowy spotkań");
+        System.out.println("Program - Kalendarz tygodniowy spotkań\n");
 
         Kalendarz kalendarz = new Kalendarz();
 
@@ -24,12 +24,13 @@ public class Main {
     }
 
     private static void printInfo() {
-        System.out.println("----- Zestaw opcji -----");
+        System.out.println("------------------------------ Zestaw opcji ------------------------------");
         System.out.println("1 - Dodanie spotkania na wybrany dzień");
         System.out.println("2 - Usunięcie wybranego spotkania z wybranego dnia");
-        System.out.println("3 - Wyświetlenie wszystkich spotkan w wybranym dniu");
+        System.out.println("3 - Wyświetlenie wszystkich spotkań w wybranym dniu");
         System.out.println("4 - Wyświetlenie wszystkich spotkań w wybranym dniu o wybranym priorytecie");
-        System.out.println("5 - Wyjście z programu\n");
+        System.out.println("5 - Wyjście z programu");
+        System.out.println("--------------------------------------------------------------------------\n");
         System.out.print("Podaj wybór opcji: ");
     }
 
@@ -50,7 +51,7 @@ public class Main {
     }
 
     private static int checkDay(Scanner input) {
-        System.out.print("Podaj dzien tygodnia na ktory chcesz zaplanowac spotkanie (0-6): ");
+        System.out.print("Podaj dzien tygodnia (0-6): ");
         int day = input.nextInt();
         while (day > 6) {
             System.out.print("Nieprawidłowy dzień! Sprobuj jeszcze raz: ");
@@ -67,7 +68,7 @@ public class Main {
         System.out.print("Podaj opis spotkania: ");
         String desc = input.nextLine();
 
-        LocalTime earliestHour = Spotkanie.earliestHour;
+        LocalTime earliestHour = Spotkanie.EARLIEST_HOUR;
         System.out.print("Podaj czas poczatku spotkania (po " + earliestHour + "): ");
         String startTime = input.nextLine();
         while (LocalTime.parse(startTime).isBefore(earliestHour)) {
@@ -88,9 +89,11 @@ public class Main {
         int day = checkDay(input);
         kalendarz.viewMeeting(day);
 
-        System.out.print("\nPodaj numer spotkania do usunięcia (liczone od 0): ");
-        int meetingNumber = input.nextInt();
-        kalendarz.deleteMeeting(day, meetingNumber);
+        if (!kalendarz.isEmpty(day)) {
+            System.out.print("\nPodaj numer spotkania do usunięcia (liczone od 0): ");
+            int meetingNumber = input.nextInt();
+            kalendarz.deleteMeeting(day, meetingNumber);
+        }
     }
 
     private static void viewMeetings(Kalendarz kalendarz, Scanner input) {

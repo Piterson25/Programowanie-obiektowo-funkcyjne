@@ -3,40 +3,44 @@ import java.util.ArrayList;
 
 public class Kalendarz {
 
-    private static ArrayList<Spotkanie>[] calendar;
+    private final ArrayList<Spotkanie>[] calendar;
 
     public Kalendarz() {
-        calendar = new ArrayList[7];
-        for (int i = 0; i < calendar.length; i++) {
-            calendar[i] = new ArrayList<>();
+        this(7);
+    }
+
+    public Kalendarz(int days) {
+        this.calendar = new ArrayList[days];
+        for (int i = 0; i < days; i++) {
+            this.calendar[i] = new ArrayList<>();
         }
     }
 
     public void addMeeting(int day, String desc, String startTime, String endTime, String priority) {
-        calendar[day].add(new Spotkanie(desc, LocalTime.parse(startTime), LocalTime.parse(endTime), priority));
+        this.calendar[day].add(new Spotkanie(desc, LocalTime.parse(startTime), LocalTime.parse(endTime), priority));
 
         System.out.println("Dodano nowe spotkanie");
     }
 
     public void deleteMeeting(int day, int meetingNumber) {
-        if (!calendar[day].isEmpty() && meetingNumber < calendar[day].size()) {
-            calendar[day].remove(meetingNumber);
+        if (!this.isEmpty(day) && meetingNumber < this.calendar[day].size()) {
+            this.calendar[day].remove(meetingNumber);
         }
         else {
-            System.out.println("Nie ma spotkań w tym dniu!");
+            System.out.println("Nie ma tego spotkania w tym dniu!");
         }
     }
 
     public void viewMeeting(int day) {
-        if (!calendar[day].isEmpty()) {
+        if (!this.isEmpty(day)) {
             int number = 0;
-            System.out.println("Dzien " + day);
+            System.out.println("\nDzien " + day);
             System.out.println("-------------");
-            for (Spotkanie spotkanie : calendar[day]) {
+            for (Spotkanie spotkanie : this.calendar[day]) {
                 System.out.println("Numer spotkania: " + number);
                 System.out.println("Opis: " + spotkanie.getDesc());
                 System.out.println("(" + spotkanie.getStartTime() + " - " + spotkanie.getEndTime() + ")");
-                System.out.println("Priorytet: " + spotkanie.getPriority() + "\n");
+                System.out.println("Priorytet: " + spotkanie.getPriority());
                 number++;
             }
         }
@@ -46,21 +50,30 @@ public class Kalendarz {
     }
 
     public void viewMeetingPriority(int day, String priority) {
-        if (!calendar[day].isEmpty()) {
+        if (!this.isEmpty(day)) {
             int number = 0;
-            for (Spotkanie spotkanie : calendar[day]) {
+            boolean findAnyPriority = false;
+            for (Spotkanie spotkanie : this.calendar[day]) {
                 if (priority.equals(spotkanie.getPriority())) {
                     System.out.println("Numer spotkania: " + number);
                     System.out.println("Opis: " + spotkanie.getDesc());
                     System.out.println("(" + spotkanie.getStartTime() + " - " + spotkanie.getEndTime() + ")");
-                    System.out.println("Priorytet: " + spotkanie.getPriority() + "\n");
+                    System.out.println("Priorytet: " + spotkanie.getPriority());
+                    findAnyPriority = true;
                 }
                 number++;
+            }
+            if (!findAnyPriority) {
+                System.out.println("Nie ma spotkań tego dnia z tym priorytetem!");
             }
         }
         else {
             System.out.println("Nie ma spotkań w tym dniu!");
         }
+    }
+
+    public boolean isEmpty(int day) {
+        return this.calendar[day].isEmpty();
     }
 
 }

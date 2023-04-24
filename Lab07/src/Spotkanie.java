@@ -10,7 +10,7 @@ public class Spotkanie {
 
     private final String priority;
 
-    public static final LocalTime earliestHour = LocalTime.of(8, 0);
+    public static final LocalTime EARLIEST_HOUR = LocalTime.of(8, 0);
 
     public Spotkanie(String desc, LocalTime startTime, LocalTime endTime, String priority) {
         this.desc = desc;
