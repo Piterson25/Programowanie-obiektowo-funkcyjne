@@ -211,7 +211,7 @@ public class Main {
         String status = readStatus(input);
 
         printEvents(kalendarz.filter(day, z -> (z instanceof Zadanie) && ((z.getEndTime()).isBefore(endTime)
-                || z.getStartTime().equals(endTime)) && ((Zadanie) z).getStatus().equals(status)));
+                || z.getEndTime().equals(endTime)) && ((Zadanie) z).getStatus().equals(status)));
     }
 
     private static void printEvents(ArrayList<Zdarzenie> events) {
